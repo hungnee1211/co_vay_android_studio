@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFC06A"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="32dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="48dp"
+        android:text="Cờ vây"
+        android:textColor="#000000"
+        android:textSize="50sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="32dp"
+        android:text="LUẬT CHƠI"
+        android:textColor="#000000"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:backgroundTint="#FFDFA8"
+        android:background="@drawable/rounded_background"
+        android:fadeScrollbars="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="32dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="8dp"
+                android:text="Cách đặt quân: Đen đi trước\n\nNgười chơi thực hiện nước đi bằng cách đặt quân cờ của mình vào các ô trống sao cho quân cờ mới đặt và một quân cùng màu đã có sẵn trên bàn cờ kẹp giữa một hoặc nhiều quân của đối thủ.\n\nHướng lật: Việc kẹp quân đối thủ có thể thực hiện theo các hướng: Hàng ngang, hàng dọc hoặc đường chéo. Tất cả các quân cờ của đối phương nằm ở giữa hai quân của bạn sẽ bị lật ngược lại thành màu của bạn.\n\nLượt chơi: Người chơi chỉ được đặt quân vào những vị trí có thể lật được ít nhất một quân của đối phương. Nếu không có nước đi hợp lệ nào, người đó phải bỏ lượt.\n\nKết thúc ván cờ: Trò chơi kết thúc khi bàn cờ đã lắp đầy các ô trống, hoặc khi cả hai người chơi đều không còn nước đi hợp lệ nào."
+                android:textColor="#000000"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
