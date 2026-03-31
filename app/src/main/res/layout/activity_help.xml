@@ -34,7 +34,7 @@
         android:layout_height="0dp"
         android:layout_weight="4"
         android:backgroundTint="#FFDFA8"
-        android:background="@drawable/rounded_background"
+
         android:fadeScrollbars="true">
 
         <LinearLayout

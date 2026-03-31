@@ -20,6 +20,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".SelectModeActivity" />
+        <activity android:name=".HelpActivity" />
+        <activity android:name=".PlayGameActivity"/>
+        <activity android:name=".SelectMenuActivity" />
+
     </application>
 
 </manifest>
