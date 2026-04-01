@@ -25,6 +25,7 @@
         <activity android:name=".HelpActivity" />
         <activity android:name=".PlayGameActivity"/>
         <activity android:name=".SelectMenuActivity" />
+        <activity android:name=".ResultActivity" />
 
     </application>
 

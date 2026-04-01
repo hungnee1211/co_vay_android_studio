@@ -7,15 +7,17 @@
 
     <include
         android:id="@+id/header"
-        layout="@layout/activity_layout_header" />
+        layout="@layout/activity_layout_header"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
-        android:id="@+id/board_wrapper"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/board_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="16dp"
-        android:background="#000000"
-        android:padding="2dp"
+        android:layout_margin="12dp"
+        app:cardBackgroundColor="#000000"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="10dp"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,20 +28,24 @@
             android:id="@+id/gridBoard"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:padding="2dp"
             android:rowCount="8"
             android:columnCount="8"
-            android:background="#FFFFFF" />
-    </FrameLayout>
+            android:background="#2E7D32" /> </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/btnMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="140dp"
+        android:layout_height="60dp"
         android:text="MENU"
         android:backgroundTint="#FF3131"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:cornerRadius="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="30dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
