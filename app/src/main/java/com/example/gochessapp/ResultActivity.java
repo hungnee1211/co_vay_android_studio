@@ -12,40 +12,58 @@ public class ResultActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // 1. Lấy dữ liệu từ Intent gửi sang
-        String result = getIntent().getStringExtra("GAME_RESULT");
-        int blackScore = getIntent().getIntExtra("BLACK_SCORE", 0);
-        int whiteScore = getIntent().getIntExtra("WHITE_SCORE", 0);
+        // 1. Lấy dữ liệu từ Intent
+        Intent intentData = getIntent();
+        int blackScore = intentData.getIntExtra("BLACK_SCORE", 0);
+        int whiteScore = intentData.getIntExtra("WHITE_SCORE", 0);
+        int blackTime = intentData.getIntExtra("BLACK_TIME", 0);
+        int whiteTime = intentData.getIntExtra("WHITE_TIME", 0);
+        String currentMode = intentData.getStringExtra("GAME_MODE");
 
-        // 2. Kiểm tra kết quả để hiển thị Giao diện tương ứng
-        if ("WIN".equals(result)) {
-            setContentView(R.layout.activity_winer); // Hiện trang thắng
-        } else if ("LOSE".equals(result)) {
-            setContentView(R.layout.activity_loser); // Hiện trang thua
+        // 2. Logic: Điểm cao thắng, Bằng điểm thì ai ít thời gian hơn thắng
+        boolean isPlayerWin;
+        if (blackScore > whiteScore) {
+            isPlayerWin = true;
+        } else if (whiteScore > blackScore) {
+            isPlayerWin = false;
         } else {
-            // Nếu hòa, Hưng có thể dùng trang winner nhưng sửa chữ thành "Hòa cờ"
-            setContentView(R.layout.activity_winer);
+            // BẰNG ĐIỂM -> So thời gian (nhỏ hơn là thắng)
+            isPlayerWin = (blackTime <= whiteTime);
         }
 
-        // 3. Ánh xạ các nút bấm (Vì cả 2 layout đều có nút PlayAgain và Menu)
-        // Hưng hãy đảm bảo ID các nút ở 2 file XML giống hệt nhau để code không bị lỗi
+        // 3. Thiết lập Layout dựa trên kết quả logic
+        if (isPlayerWin) {
+            setContentView(R.layout.activity_winer);
+        } else {
+            setContentView(R.layout.activity_loser);
+        }
+
+        // 4. Ánh xạ View (Phải làm sau setContentView)
+
+        TextView tvScoreBot = findViewById(R.id.tvBotScore);
         Button btnPlayAgain = findViewById(R.id.btnPlayAgain);
         Button btnBackMenu = findViewById(R.id.btnBackMenu);
 
-        // Xử lý nút Chơi lại
+
+        // 5. Xử lý nút Thử lại (Play Again)
         if (btnPlayAgain != null) {
             btnPlayAgain.setOnClickListener(v -> {
-                Intent intent = new Intent(ResultActivity.this, PlayGameActivity.class);
-                startActivity(intent);
+                Intent restartIntent = new Intent(ResultActivity.this, PlayGameActivity.class);
+                // Truyền lại mode để ván mới biết là Easy hay Hard
+                restartIntent.putExtra("GAME_MODE", currentMode);
+                // Xóa stack cũ để tạo ván mới sạch sẽ
+                restartIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(restartIntent);
                 finish();
             });
         }
 
-        // Xử lý nút Về Menu chính
+        // 6. Xử lý nút Menu
         if (btnBackMenu != null) {
             btnBackMenu.setOnClickListener(v -> {
-                Intent intent = new Intent(ResultActivity.this, MainActivity.class);
-                startActivity(intent);
+                Intent menuIntent = new Intent(ResultActivity.this, SelectMenuActivity.class);
+                menuIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(menuIntent);
                 finish();
             });
         }

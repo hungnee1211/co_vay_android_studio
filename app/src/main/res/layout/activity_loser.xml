@@ -33,7 +33,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btnTryAgain"
+            android:id="@+id/btnPlayAgain"
             android:layout_width="0dp"
             android:layout_height="70dp"
             android:layout_weight="1"
