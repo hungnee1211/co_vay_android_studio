@@ -1,3 +1,5 @@
+
+
 package com.example.gochessapp;
 
 import android.content.Intent;
@@ -17,6 +19,7 @@ public class PlayGameActivity extends AppCompatActivity {
     private int blackSec = 0, whiteSec = 0;
     private Handler handler = new Handler();
     private TextView tvBTime, tvWTime, tvBScore, tvWScore;
+    private boolean isPaused = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,15 @@ public class PlayGameActivity extends AppCompatActivity {
         tvWScore = findViewById(R.id.tvBotScore);
         chessBoard = findViewById(R.id.gridBoard);
 
+
+        Button btnMenu = findViewById(R.id.btnMenu);
+        btnMenu.setOnClickListener(v -> {
+            isPaused = true; // Tạm dừng đồng hồ khi vào Menu
+            Intent intent = new Intent(PlayGameActivity.this, SelectMenuActivity.class);
+            // KHÔNG gọi finish() ở đây để Activity vẫn nằm trong bộ nhớ
+            startActivity(intent);
+        });
+
         initBoard();
         startTimer();
     }
@@ -38,31 +50,67 @@ public class PlayGameActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (currentTurn == HandleGamePlay.BLACK) blackSec++;
-                else whiteSec++;
-                updateUI();
+                if (!isPaused) { // Chỉ cộng giây nếu không bị Pause
+                    if (currentTurn == HandleGamePlay.BLACK) blackSec++;
+                    else whiteSec++;
+                    updateUI();
+                }
                 handler.postDelayed(this, 1000);
             }
         }, 1000);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isPaused = false; // Chạy lại đồng hồ
+    }
+
     private void initBoard() {
         chessBoard.post(() -> {
+            // 1. Tính toán kích thước 1 ô cờ
             int size = chessBoard.getWidth() / 8;
+
+            // 2. Tính toán khoảng cách đệm (Padding)
+            // Lấy size / 6 hoặc size / 7 là tỉ lệ "vàng" để quân cờ trông vừa vặn nhất
+            int paddingValue = size / 7;
+
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
                     ImageView cell = new ImageView(this);
-                    cell.setLayoutParams(new GridLayout.LayoutParams(GridLayout.spec(i), GridLayout.spec(j)));
-                    cell.getLayoutParams().width = size; cell.getLayoutParams().height = size;
+
+                    // Thiết lập Layout cho ô
+                    GridLayout.LayoutParams params = new GridLayout.LayoutParams(
+                            GridLayout.spec(i),
+                            GridLayout.spec(j)
+                    );
+                    params.width = size;
+                    params.height = size;
+                    cell.setLayoutParams(params);
+
+                    // QUAN TRỌNG: Thiết lập Padding để quân cờ nhỏ lại
+                    cell.setPadding(paddingValue, paddingValue, paddingValue, paddingValue);
+
+                    // Đảm bảo hình ảnh quân cờ luôn nằm giữa và thu nhỏ theo Padding
+                    cell.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
+                    // Set nền ô cờ (ô vuông xanh)
                     cell.setBackgroundResource(R.drawable.cell_background);
+
                     final int r = i, c = j;
                     cell.setOnClickListener(v -> onCellClick(r, c));
-                    cells[i][j] = cell; boardState[i][j] = HandleGamePlay.EMPTY;
+
+                    cells[i][j] = cell;
+                    boardState[i][j] = HandleGamePlay.EMPTY;
                     chessBoard.addView(cell);
                 }
             }
-            placePiece(3, 3, HandleGamePlay.WHITE); placePiece(4, 4, HandleGamePlay.WHITE);
-            placePiece(3, 4, HandleGamePlay.BLACK); placePiece(4, 3, HandleGamePlay.BLACK);
+
+            // 3. Đặt các quân cờ khởi tạo
+            placePiece(3, 3, HandleGamePlay.WHITE);
+            placePiece(4, 4, HandleGamePlay.WHITE);
+            placePiece(3, 4, HandleGamePlay.BLACK);
+            placePiece(4, 3, HandleGamePlay.BLACK);
         });
     }
 
@@ -115,6 +163,8 @@ public class PlayGameActivity extends AppCompatActivity {
         boardState[r][c] = type;
         cells[r][c].setImageResource(type == HandleGamePlay.BLACK ? R.drawable.stone_black : R.drawable.stone_white);
     }
+
+
 
     private void finishGame() {
         handler.removeCallbacksAndMessages(null);
