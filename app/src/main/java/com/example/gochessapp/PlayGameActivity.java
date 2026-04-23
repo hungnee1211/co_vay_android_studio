@@ -68,18 +68,17 @@ public class PlayGameActivity extends AppCompatActivity {
 
     private void initBoard() {
         chessBoard.post(() -> {
-            // 1. Tính toán kích thước 1 ô cờ
+            // Chiều rộng bàn cờ chia cho 8
             int size = chessBoard.getWidth() / 8;
 
-            // 2. Tính toán khoảng cách đệm (Padding)
-            // Lấy size / 6 hoặc size / 7 là tỉ lệ "vàng" để quân cờ trông vừa vặn nhất
-            int paddingValue = size / 7;
+            // Tỉ lệ Padding 18% là đẹp nhất cho màn hình độ phân giải cao
+            // Quân cờ sẽ chiếm khoảng 64% diện tích ô, tạo độ thoáng cực sang
+            int paddingValue = (int) (size * 0.18);
 
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
                     ImageView cell = new ImageView(this);
 
-                    // Thiết lập Layout cho ô
                     GridLayout.LayoutParams params = new GridLayout.LayoutParams(
                             GridLayout.spec(i),
                             GridLayout.spec(j)
@@ -88,13 +87,11 @@ public class PlayGameActivity extends AppCompatActivity {
                     params.height = size;
                     cell.setLayoutParams(params);
 
-                    // QUAN TRỌNG: Thiết lập Padding để quân cờ nhỏ lại
+                    // Quan trọng: Giữ quân cờ nhỏ gọn và sắc nét
                     cell.setPadding(paddingValue, paddingValue, paddingValue, paddingValue);
-
-                    // Đảm bảo hình ảnh quân cờ luôn nằm giữa và thu nhỏ theo Padding
                     cell.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
-                    // Set nền ô cờ (ô vuông xanh)
+                    // Nền xanh phẳng hiện đại
                     cell.setBackgroundResource(R.drawable.cell_background);
 
                     final int r = i, c = j;
@@ -106,7 +103,7 @@ public class PlayGameActivity extends AppCompatActivity {
                 }
             }
 
-            // 3. Đặt các quân cờ khởi tạo
+            // Đặt quân khởi tạo
             placePiece(3, 3, HandleGamePlay.WHITE);
             placePiece(4, 4, HandleGamePlay.WHITE);
             placePiece(3, 4, HandleGamePlay.BLACK);
@@ -133,7 +130,7 @@ public class PlayGameActivity extends AppCompatActivity {
                 else if (hasMoves(HandleGamePlay.WHITE)) makeBotMove();
                 else finishGame();
             }
-        }, 1000);
+        }, 1500);
     }
 
     private void executeMove(int r, int c, int p) {

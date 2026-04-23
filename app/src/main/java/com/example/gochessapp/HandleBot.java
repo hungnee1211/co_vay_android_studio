@@ -28,7 +28,9 @@ public class HandleBot {
                 }
             }
         }
+
         return new int[]{bestR, bestC};
+
     }
 
     private int[] getHardMove(int[][] board) {
@@ -59,6 +61,7 @@ public class HandleBot {
                         if (beta <= alpha) break;
                     }
             return maxEval;
+
         } else {
             int minEval = Integer.MAX_VALUE;
             for (int i = 0; i < 8; i++)
