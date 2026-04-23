@@ -22,8 +22,7 @@ public class SelectMenuActivity extends AppCompatActivity {
         });
 
         btnContinue.setOnClickListener(v -> {
-            Intent intent = new Intent(SelectMenuActivity.this, PlayGameActivity.class);
-            startActivity(intent);
+            finish();
         });
 
     }
